@@ -12,7 +12,7 @@ const app = express()
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    process.env.FRONTEND_URL // Render frontend
+    process.env.FRONTEND_URL
   ],
   credentials: true
 }))
@@ -25,8 +25,9 @@ await usersConn()
 
 app.get('/', (req, res) => res.json({ status: "Backend Working!" }))
 
-app.use('/api', timetableRouter)
-app.use('/api', usersRouter)
+// mount routers
+app.use('/api/timetable', timetableRouter)
+app.use('/api/users', usersRouter)
 
 // Global error handler
 app.use((err, req, res, next) => {
