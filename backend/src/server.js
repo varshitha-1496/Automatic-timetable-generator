@@ -19,20 +19,27 @@ app.use(cors({
 
 app.use(express.json())
 
-// Initialize DB connections
+// DB connections
 await timetableConn()
 await usersConn()
 
-app.get('/', (req, res) => res.json({ status: "Backend Working!" }))
+app.get('/', (req, res) => {
+  res.json({ message: "Backend working!" })
+})
 
-// mount routers
-app.use('/api/timetable', timetableRouter)
-app.use('/api/users', usersRouter)
+app.use('/api', timetableRouter)
+app.use('/api', usersRouter)
 
-// Global error handler
+// Error handler
 app.use((err, req, res, next) => {
   console.error(err)
-  res.status(500).json({ error: 'Internal Server Error' })
+  res.status(500).json({ error: "Internal Server Error" })
+})
+
+// ⭐️ VERY IMPORTANT FOR RENDER ⭐️
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
 
 export default app
